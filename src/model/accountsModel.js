@@ -34,4 +34,15 @@ const createBankStatement = async (data) => {
 };
 
 
-module.exports = { createBankStatement };
+
+const getBankStatements = async () => {
+    try {
+        const [results] = await dbConn.query('SELECT * FROM bank_statements');
+        return results;
+    } catch (error) {
+        console.error('Error fetching bank statements:', error);
+        throw new Error('Error fetching bank statements: ' + error.message);
+    }
+};
+
+module.exports = { createBankStatement, getBankStatements };

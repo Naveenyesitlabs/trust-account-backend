@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { extractPdfData } = require('../utils/extractData');
-const { createBankStatement } = require('../model/accountsModel');
+const { createBankStatement, getBankStatements } = require('../model/accountsModel');
 
 const createBankStatementController = async (req, res) => {
     try {
@@ -56,4 +56,22 @@ const createBankStatementController = async (req, res) => {
     }
 };
 
-module.exports = { createBankStatementController };
+
+const getBankStatementsController = async (req, res) => {
+    try {
+        // Get all bank statements from the database
+        const bankStatements = await getBankStatements();
+
+        if (bankStatements.length === 0) {
+            return res.status(404).json({ message: 'No bank statements found.' });
+        }
+
+        // Send the list of bank statements as a response
+        res.status(200).json(bankStatements);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ message: 'Error fetching bank statements: ' + error.message });
+    }
+};
+
+module.exports = { createBankStatementController, getBankStatementsController };

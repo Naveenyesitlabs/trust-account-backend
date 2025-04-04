@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const { authenticateToken } = require('../middleware/authMiddleware');
-const { createBankStatementController } = require('../controller/accountsController');
+const { createBankStatementController, getBankStatementsController } = require('../controller/accountsController');
 const path = require('path');
 
 const router = express.Router();
@@ -19,5 +19,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post('/upload-statement', authenticateToken, upload.single('pdf'), createBankStatementController);
+router.get('/get-statement', authenticateToken, getBankStatementsController);
 
 module.exports = router;
